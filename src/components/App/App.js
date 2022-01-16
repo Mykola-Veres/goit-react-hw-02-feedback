@@ -17,8 +17,10 @@ class App extends Component {
     }));
   };
 
-  countTotalFeedback = () =>
-    this.state.bad + this.state.good + this.state.neutral;
+  countTotalFeedback = () => {
+    const { bad, good, neutral } = this.state;
+    return bad + good + neutral;
+  };
 
   countPositiveFeedbackPercentage = () => {
     let countTotal = this.countTotalFeedback();
@@ -28,23 +30,27 @@ class App extends Component {
     return Math.round((this.state.good * 100) / countTotal);
   };
 
+  createArrayKeysState = () => Object.keys(this.state);
+
   render() {
+    const { good, neutral, bad } = this.state;
+    const countTotalFeedback = this.countTotalFeedback();
     return (
       <>
         <Section title="Please laeve feetback">
           <FeedbackOptions
-            options={Object.keys(this.state)}
+            options={this.createArrayKeysState()}
             onLeaveFeedback={this.counterFeetback}
           />
         </Section>
 
-        {this.countTotalFeedback() ? (
+        {countTotalFeedback ? (
           <Section title="Statistics">
             <Statistics
-              good={this.state.good}
-              neutral={this.state.neutral}
-              bad={this.state.bad}
-              total={this.countTotalFeedback()}
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={countTotalFeedback}
               positivePercentage={this.countPositiveFeedbackPercentage()}
             />
           </Section>
